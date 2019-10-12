@@ -29,7 +29,13 @@ Token Lexer::NextToken()
 	}
 
 	char c = CurrentChar();
+	_diagnostics.push_back("Unrecognized token '" + std::string(1, c) + "'.");
 	return Token(TokenKind::Error, _pos++, std::string(1, c));
+}
+
+const std::vector<std::string> &Lexer::GetDiagnostics() const
+{
+	return _diagnostics;
 }
 
 char Lexer::CurrentChar() const

@@ -25,7 +25,11 @@ int main()
 
 		Parser parser(input);
 		auto tree = parser.Parse();
-		std::cout << tree->AsStr() << std::endl;
+		if (!parser.GetDiagnostics().empty())
+		{
+			for (const auto &d : parser.GetDiagnostics())
+				std::cerr << d << std::endl;
+		}
 	}
 
 	return 0;

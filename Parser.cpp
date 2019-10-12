@@ -1,3 +1,4 @@
+#include <sstream>
 #include "Parser.h"
 #include "Lexer.h"
 
@@ -8,10 +9,13 @@ Parser::Parser(std::string &source)
 	while (true)
 	{
 		auto token = lexer.NextToken();
+		if (token.GetKind() == TokenKind::Error)
+			continue;
 		_tokens.push_back(token);
 		if (token.GetKind() == TokenKind::EndOfFile)
 			break;
 	}
+	_diagnostics.insert(_diagnostics.end(), lexer.GetDiagnostics().begin(), lexer.GetDiagnostics().end());
 }
 
 std::unique_ptr<Node> Parser::Parse()
@@ -19,6 +23,11 @@ std::unique_ptr<Node> Parser::Parse()
 	auto expr = ParseExpression();
 	auto eof = Expect(TokenKind::EndOfFile);
 	return expr;
+}
+
+const std::vector<std::string> &Parser::GetDiagnostics() const
+{
+	return _diagnostics;
 }
 
 std::unique_ptr<Node> Parser::ParseExpression()
@@ -64,6 +73,9 @@ Token Parser::Expect(TokenKind kind)
 {
 	if (Current().GetKind() == kind)
 		return Consume();
-
+	
+	std::stringstream out;
+	out << "Unexpected token '" << Current().GetKind() << "' where token '" << kind << "' was expected.";
+	_diagnostics.push_back(out.str());
 	return Token(kind, Current().GetPos(), "");
 }
