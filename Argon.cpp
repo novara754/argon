@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <string>
+#include "Lexer.h"
 
 void help();
 
@@ -22,7 +23,14 @@ int main()
 		else if (input == ".quit")
 			break;
 
-		std::cout << input << std::endl;
+		Lexer lexer(input);
+		while (true)
+		{
+			auto token = lexer.NextToken();
+			std::cout << token << std::endl;
+			if (token.GetKind() == TokenKind::EndOfFile)
+				break;
+		}
 	}
 
 	return 0;
