@@ -25,9 +25,9 @@ class Token
 public:
 	explicit Token(TokenKind kind, std::size_t pos, std::string raw);
 	Token(const Token &token);
-	TokenKind Token::GetKind() const;
-	std::size_t Token::GetPos() const;
-	std::string Token::GetRaw() const;
+	TokenKind GetKind() const;
+	std::size_t GetPos() const;
+	std::string GetRaw() const;
 };
 
 std::ostream &operator<<(std::ostream &out, const TokenKind &kind);

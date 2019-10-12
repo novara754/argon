@@ -1,7 +1,7 @@
 #include <cctype>
 #include "Lexer.h"
 
-Lexer::Lexer(std::string source)
+Lexer::Lexer(std::string &source)
 	: _source(source),
 	_pos(0)
 {}

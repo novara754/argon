@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include <string>
-#include "Lexer.h"
+#include "Parser.h"
 
 void help();
 
@@ -23,14 +23,9 @@ int main()
 		else if (input == ".quit")
 			break;
 
-		Lexer lexer(input);
-		while (true)
-		{
-			auto token = lexer.NextToken();
-			std::cout << token << std::endl;
-			if (token.GetKind() == TokenKind::EndOfFile)
-				break;
-		}
+		Parser parser(input);
+		auto tree = parser.Parse();
+		std::cout << tree->AsStr() << std::endl;
 	}
 
 	return 0;

@@ -6,10 +6,10 @@
 
 class Lexer
 {
-	std::string _source;
+	std::string &_source;
 	std::size_t _pos;
 public:
-	explicit Lexer(std::string source);
+	explicit Lexer(std::string &source);
 	Token NextToken();
 private:
 	char CurrentChar() const;
