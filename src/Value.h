@@ -20,4 +20,5 @@ struct Value
 	Value(bool value);
 };
 
+std::ostream &operator<<(std::ostream &out, const ValueKind &k);
 std::ostream &operator<<(std::ostream &out, const Value &v);

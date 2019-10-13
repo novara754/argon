@@ -15,18 +15,18 @@ struct BinaryOperator
 };
 
 const TokenKind PrecedenceOrder[] = {
-	TokenKind::Plus,
-	TokenKind::Minus,
-	TokenKind::Star,
-	TokenKind::Slash,
-	TokenKind::LessThan,
-	TokenKind::LessThanEqual,
+	TokenKind::Or,
+	TokenKind::And,
+	TokenKind::BangEqual,
+	TokenKind::EqualEqual,
 	TokenKind::GreaterThan,
 	TokenKind::GreaterThanEqual,
-	TokenKind::EqualEqual,
-	TokenKind::BangEqual,
-	TokenKind::And,
-	TokenKind::Or,
+	TokenKind::LessThan,
+	TokenKind::LessThanEqual,
+	TokenKind::Minus,
+	TokenKind::Plus,
+	TokenKind::Slash,
+	TokenKind::Star,
 };
 
 const BinaryOperator BinaryOperators[] = {

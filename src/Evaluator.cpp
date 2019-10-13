@@ -1,3 +1,4 @@
+#include <sstream>
 #include "Evaluator.h"
 #include "Facts.h"
 
@@ -36,6 +37,8 @@ Value Evaluator::Evaluate(BinaryNode *node)
 	}
 	else
 	{
-		throw std::exception{"TypeError: invalid types for binary operator"};
+		std::stringstream out;
+		out << "TypeError: Unknown operator '" << node->GetOperator().GetRaw() << "' for operands " << left.kind << " and " << right.kind << ".";
+		throw std::exception{ out.str().c_str() };
 	}
 }
