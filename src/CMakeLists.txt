@@ -6,4 +6,5 @@ add_executable (Argon
 	"Parser.cpp" "Parser.h"
 	"Node.cpp" "Node.h"
 	"Value.cpp" "Value.h"
-	"Evaluator.cpp" "Evaluator.h")
+	"Evaluator.cpp" "Evaluator.h"
+	"Facts.h")
