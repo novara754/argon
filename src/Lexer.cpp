@@ -1,5 +1,13 @@
 #include <cctype>
+#include <map>
 #include "Lexer.h"
+
+const std::map<std::string, TokenKind> ReservedKeywords = {
+	{ "true", TokenKind::True },
+	{ "false", TokenKind::False },
+	{ "and", TokenKind::And },
+	{ "or", TokenKind::Or },
+};
 
 Lexer::Lexer(std::string &source)
 	: _source(source),
@@ -16,6 +24,9 @@ Token Lexer::NextToken()
 
 	if (std::isdigit(CurrentChar()))
 		return Number();
+
+	if (std::isalpha(CurrentChar()))
+		return Identifier();
 
 	switch (CurrentChar())
 	{
@@ -58,4 +69,16 @@ Token Lexer::Number()
 
 	auto raw = _source.substr(start, end - start);
 	return Token(TokenKind::Number, start, raw);
+}
+
+Token Lexer::Identifier()
+{
+	auto start = _pos;
+	while (std::isalpha(CurrentChar()) || CurrentChar() == '_' || CurrentChar() == '-')
+		_pos++;
+	auto end = _pos;
+
+	auto raw = _source.substr(start, end - start);
+	auto itr = ReservedKeywords.find(raw);
+	return Token(itr != ReservedKeywords.end() ? itr->second : TokenKind::Identifier, _pos, raw);
 }

@@ -31,6 +31,11 @@ Value LiteralNode::GetValue() const
 			int value = std::stoi(_literal.GetRaw());
 			return { value };
 		}
+		case TokenKind::True:
+		case TokenKind::False:
+		{
+			return { _literal.GetKind() == TokenKind::True };
+		}
 	}
 }
 

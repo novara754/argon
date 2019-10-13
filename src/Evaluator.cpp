@@ -1,4 +1,5 @@
 #include "Evaluator.h"
+#include "Facts.h"
 
 Evaluator::Evaluator(std::unique_ptr<Node> &root)
 	: _root(root)
@@ -27,11 +28,14 @@ Value Evaluator::Evaluate(BinaryNode *node)
 {
 	auto left = Evaluate(node->GetLeft().get());
 	auto right = Evaluate(node->GetRight().get());
-	switch (node->GetOperator().GetKind())
+
+	std::optional<BinaryOperator> bin_op = GetBinaryOperator(node->GetOperator().GetKind(), left.kind, right.kind);
+	if (bin_op.has_value())
 	{
-		case TokenKind::Plus: return { left.int_value + right.int_value };
-		case TokenKind::Minus: return { left.int_value - right.int_value };
-		case TokenKind::Star: return { left.int_value * right.int_value };
-		case TokenKind::Slash: return { left.int_value / right.int_value };
+		return bin_op.value().Operate(left, right);
+	}
+	else
+	{
+		throw std::exception{"TypeError: invalid types for binary operator"};
 	}
 }

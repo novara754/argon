@@ -18,4 +18,5 @@ private:
 	char CurrentChar() const;
 	void SkipWhitespace();
 	Token Number();
+	Token Identifier();
 };

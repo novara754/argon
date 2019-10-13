@@ -1,4 +1,5 @@
 #include <sstream>
+#include <algorithm>
 #include "Parser.h"
 #include "Lexer.h"
 #include "Facts.h"
@@ -65,7 +66,7 @@ std::unique_ptr<Node> Parser::ParsePrimary()
 	}
 	else
 	{
-		auto literal = Expect(TokenKind::Number);
+		auto literal = Expect({ TokenKind::Number, TokenKind::True, TokenKind::False });
 		return std::make_unique<LiteralNode>(literal);
 	}
 }
@@ -91,4 +92,27 @@ Token Parser::Expect(TokenKind kind)
 	out << "Unexpected token '" << Current().GetKind() << "' where token '" << kind << "' was expected.";
 	_diagnostics.push_back(out.str());
 	return Token(kind, Current().GetPos(), "");
+}
+
+Token Parser::Expect(std::vector<TokenKind> kinds)
+{
+	auto itr = std::find(kinds.begin(), kinds.end(), Current().GetKind());
+	if (itr == kinds.end())
+	{
+		std::stringstream out;
+		out << "Unexpected token '" << Current().GetKind() << "' where one of the tokens ";
+		for (int i = 0; i < kinds.size(); i ++)
+		{
+			if (i != 0)
+				out << ", ";
+			out << "'" << kinds[i] << "'";
+		}
+		out << "was expected";
+		_diagnostics.push_back(out.str());
+		return Token(kinds[0], Current().GetPos(), "");
+	}
+	else
+	{
+		return Consume();
+	}
 }

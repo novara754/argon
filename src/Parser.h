@@ -22,4 +22,5 @@ private:
 	Token Current() const;
 	Token Consume();
 	Token Expect(TokenKind kind);
+	Token Expect(std::vector<TokenKind> kinds);
 };

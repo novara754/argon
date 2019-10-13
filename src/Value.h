@@ -5,6 +5,7 @@
 enum class ValueKind
 {
 	Integer,
+	Boolean,
 };
 
 struct Value
@@ -13,8 +14,10 @@ struct Value
 	union
 	{
 		int int_value;
+		bool bool_value;
 	};
 	Value(int value);
+	Value(bool value);
 };
 
 std::ostream &operator<<(std::ostream &out, const Value &v);

@@ -7,4 +7,4 @@ add_executable (Argon
 	"Node.cpp" "Node.h"
 	"Value.cpp" "Value.h"
 	"Evaluator.cpp" "Evaluator.h"
-	"Facts.h")
+	"Facts.cpp" "Facts.h")

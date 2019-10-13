@@ -34,7 +34,15 @@ int main()
 		else
 		{
 			Evaluator evaluator(tree);
-			std::cout << evaluator.Evaluate() << std::endl;
+			try
+			{
+				std::cout << evaluator.Evaluate() << std::endl;
+			}
+			catch (const std::exception &e)
+			{
+				std::cerr << e.what() << std::endl;
+			}
+
 		}
 	}
 

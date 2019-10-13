@@ -13,6 +13,11 @@ enum class TokenKind
 	CParen,
 	Period,
 	Number,
+	Identifier,
+	True,
+	False,
+	And,
+	Or,
 	EndOfFile,
 	Error,
 };
