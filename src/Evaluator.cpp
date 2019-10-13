@@ -15,8 +15,8 @@ Value Evaluator::Evaluate(Node *node)
 {
 	switch (node->GetKind())
 	{
-		case NodeKind::Literal: return Evaluate((LiteralNode *)node);
-		case NodeKind::BinaryOperation: return Evaluate((BinaryNode *)node);
+		case NodeKind::Literal: return Evaluate(static_cast<LiteralNode *>(node));
+		case NodeKind::BinaryOperation: return Evaluate(static_cast<BinaryNode *>(node));
 	}
 }
 
