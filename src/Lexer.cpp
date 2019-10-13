@@ -37,6 +37,48 @@ Token Lexer::NextToken()
 		case '(': return Token(TokenKind::OParen, _pos++, "(");
 		case ')': return Token(TokenKind::CParen, _pos++, ")");
 		case '.': return Token(TokenKind::Period, _pos++, ".");
+		case '<':
+		{
+			if (Peek() == '=')
+			{
+				_pos += 2;
+				return Token(TokenKind::LessThanEqual, _pos - 2, "<=");
+			}
+			else
+			{
+				return Token(TokenKind::LessThan, _pos++, "<");
+			}
+		}
+		case '>':
+		{
+			if (Peek() == '=')
+			{
+				_pos += 2;
+				return Token(TokenKind::GreaterThanEqual, _pos - 2, ">=");
+			}
+			else
+			{
+				return Token(TokenKind::GreaterThan, _pos++, ">");
+			}
+		}
+		case '=':
+		{
+			if (Peek() == '=')
+			{
+				_pos += 2;
+				return Token(TokenKind::EqualEqual, _pos - 2, "==");
+			}
+			break;
+		}
+		case '!':
+		{
+			if (Peek() == '=')
+			{
+				_pos += 2;
+				return Token(TokenKind::BangEqual, _pos - 2, "!=");
+			}
+			break;
+		}
 	}
 
 	char c = CurrentChar();
@@ -52,6 +94,11 @@ const std::vector<std::string> &Lexer::GetDiagnostics() const
 char Lexer::CurrentChar() const
 {
 	return _pos >= _source.length() ? '\0' : _source.at(_pos);
+}
+
+char Lexer::Peek() const
+{
+	return (_pos + 1) >= _source.length() ? '\0' : _source.at(_pos + 1);
 }
 
 void Lexer::SkipWhitespace()

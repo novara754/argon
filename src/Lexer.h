@@ -16,6 +16,7 @@ public:
 	const std::vector<std::string> &GetDiagnostics() const;
 private:
 	char CurrentChar() const;
+	char Peek() const;
 	void SkipWhitespace();
 	Token Number();
 	Token Identifier();

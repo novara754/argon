@@ -18,6 +18,12 @@ enum class TokenKind
 	False,
 	And,
 	Or,
+	LessThan,
+	LessThanEqual,
+	GreaterThan,
+	GreaterThanEqual,
+	EqualEqual,
+	BangEqual,
 	EndOfFile,
 	Error,
 };
