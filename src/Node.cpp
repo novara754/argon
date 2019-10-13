@@ -22,6 +22,18 @@ const Token &LiteralNode::GetToken() const
 	return _literal;
 }
 
+Value LiteralNode::GetValue() const
+{
+	switch (_literal.GetKind())
+	{
+		case TokenKind::Number:
+		{
+			int value = std::stoi(_literal.GetRaw());
+			return { value };
+		}
+	}
+}
+
 BinaryNode::BinaryNode(std::unique_ptr<Node> left, std::unique_ptr<Node> right, const Token op)
 	: _left(std::move(left)),
 	_right(std::move(right)),

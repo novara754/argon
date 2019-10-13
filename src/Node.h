@@ -3,6 +3,7 @@
 #include <memory>
 #include <ostream>
 #include "Token.h"
+#include "Value.h"
 
 enum class NodeKind
 {
@@ -25,6 +26,7 @@ public:
 	NodeKind GetKind() const;
 	std::string AsStr() const;
 	const Token &GetToken() const;
+	Value GetValue() const;
 };
 
 class BinaryNode : public Node

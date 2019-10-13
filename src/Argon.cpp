@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <string>
 #include "Parser.h"
+#include "Evaluator.h"
 
 void help();
 
@@ -29,6 +30,11 @@ int main()
 		{
 			for (const auto &d : parser.GetDiagnostics())
 				std::cerr << d << std::endl;
+		}
+		else
+		{
+			Evaluator evaluator(tree);
+			std::cout << evaluator.Evaluate() << std::endl;
 		}
 	}
 
