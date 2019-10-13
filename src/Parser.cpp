@@ -1,6 +1,7 @@
 #include <sstream>
 #include "Parser.h"
 #include "Lexer.h"
+#include "Facts.h"
 
 Parser::Parser(std::string &source)
 	: _pos(0)
@@ -37,17 +38,19 @@ std::unique_ptr<Node> Parser::ParseExpression()
 	return term;
 }
 
-std::unique_ptr<Node> Parser::ParseTerm()
+std::unique_ptr<Node> Parser::ParseTerm(int parent_prec)
 {
 	auto left = ParsePrimary();
-
-	if (Current().GetKind() == TokenKind::Plus || Current().GetKind() == TokenKind::Minus)
+	while (true)
 	{
+		auto prec = GetBinaryOperatorPrecedence(Current().GetKind());
+		if (prec == 0 || prec <= parent_prec)
+			break;
 		auto op = Consume();
-		auto right = ParseTerm();
+		auto right = ParseTerm(prec);
 		left = std::make_unique<BinaryNode>(std::move(left), std::move(right), op);
 	}
-	
+
 	return left;
 }
 
