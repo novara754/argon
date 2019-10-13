@@ -56,8 +56,18 @@ std::unique_ptr<Node> Parser::ParseTerm(int parent_prec)
 
 std::unique_ptr<Node> Parser::ParsePrimary()
 {
-	auto literal = Expect(TokenKind::Number);
-	return std::make_unique<LiteralNode>(literal);
+	if (Current().GetKind() == TokenKind::OParen)
+	{
+		auto oparen = Consume();
+		auto expr = ParseTerm();
+		auto cparen = Expect(TokenKind::CParen);
+		return expr;
+	}
+	else
+	{
+		auto literal = Expect(TokenKind::Number);
+		return std::make_unique<LiteralNode>(literal);
+	}
 }
 
 Token Parser::Current() const
