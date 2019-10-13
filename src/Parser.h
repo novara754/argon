@@ -17,7 +17,7 @@ public:
 	const std::vector<std::string> &GetDiagnostics() const;
 private:
 	std::unique_ptr<Node> ParseExpression();
-	std::unique_ptr<Node> ParseTerm(int parent_prec = 0);
+	std::unique_ptr<Node> ParseTerm(int parent_prec = -1);
 	std::unique_ptr<Node> ParsePrimary();
 	Token Current() const;
 	Token Consume();

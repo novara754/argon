@@ -44,7 +44,7 @@ std::unique_ptr<Node> Parser::ParseTerm(int parent_prec)
 	while (true)
 	{
 		auto prec = GetBinaryOperatorPrecedence(Current().GetKind());
-		if (prec == 0 || prec <= parent_prec)
+		if (prec == -1 || prec <= parent_prec)
 			break;
 		auto op = Consume();
 		auto right = ParseTerm(prec);
