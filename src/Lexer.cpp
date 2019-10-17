@@ -45,6 +45,11 @@ Token Lexer::NextToken()
 				_pos += 2;
 				return Token(TokenKind::LessThanEqual, _pos - 2, "<=");
 			}
+			else if (Peek() == '-')
+			{
+				_pos += 2;
+				return Token(TokenKind::LeftArrow, _pos - 2, "<-");
+			}
 			else
 			{
 				return Token(TokenKind::LessThan, _pos++, "<");

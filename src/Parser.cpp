@@ -22,7 +22,7 @@ Parser::Parser(std::string &source)
 
 std::unique_ptr<Node> Parser::Parse()
 {
-	auto expr = ParseExpression();
+	auto expr = ParseSequence();
 	auto eof = Expect(TokenKind::EndOfFile);
 	return expr;
 }
@@ -32,19 +32,34 @@ const std::vector<std::string> &Parser::GetDiagnostics() const
 	return _diagnostics;
 }
 
-std::unique_ptr<Node> Parser::ParseExpression()
+std::unique_ptr<Node> Parser::ParseSequence()
 {
 	std::vector<std::unique_ptr<Node>> expressions;
-	expressions.push_back(std::move(ParseTerm()));
+	expressions.push_back(std::move(ParseExpression()));
 
 	while (Current().GetKind() == TokenKind::Comma)
 	{
 		auto comma = Consume();
-		expressions.push_back(std::move(ParseTerm()));
+		expressions.push_back(std::move(ParseExpression()));
 	}
 
 	auto period = Expect(TokenKind::Period);
 	return std::make_unique<SequenceNode>(std::move(expressions));
+}
+
+std::unique_ptr<Node> Parser::ParseExpression()
+{
+	if (Current().GetKind() == TokenKind::Identifier && Peek(1).GetKind() == TokenKind::LeftArrow)
+	{
+		auto identifier = Consume();
+		auto left_arrow = Consume();
+		auto value = ParseExpression();
+		return std::make_unique<BindingNode>(identifier, std::move(value));
+	}
+	else
+	{
+		return ParseTerm();
+	}
 }
 
 std::unique_ptr<Node> Parser::ParseTerm(int parent_prec)
@@ -65,23 +80,37 @@ std::unique_ptr<Node> Parser::ParseTerm(int parent_prec)
 
 std::unique_ptr<Node> Parser::ParsePrimary()
 {
-	if (Current().GetKind() == TokenKind::OParen)
+	switch (Current().GetKind())
 	{
-		auto oparen = Consume();
-		auto expr = ParseTerm();
-		auto cparen = Expect(TokenKind::CParen);
-		return expr;
+		case TokenKind::OParen:
+		{
+			auto oparen = Consume();
+			auto expr = ParseTerm();
+			auto cparen = Expect(TokenKind::CParen);
+			return expr;
+		}
+		case TokenKind::Identifier:
+		{
+			auto identifier = Consume();
+			return std::make_unique<VariableAccessNode>(identifier);
+		}
+		default:
+		{
+			auto literal = Expect({ TokenKind::Number, TokenKind::True, TokenKind::False });
+			return std::make_unique<LiteralNode>(literal);
+		}
 	}
-	else
-	{
-		auto literal = Expect({ TokenKind::Number, TokenKind::True, TokenKind::False });
-		return std::make_unique<LiteralNode>(literal);
-	}
+}
+
+Token Parser::Peek(int offset) const
+{
+	int pos = _pos + offset;
+	return pos >= _tokens.size() ? _tokens.back() : _tokens.at(pos);
 }
 
 Token Parser::Current() const
 {
-	return _pos >= _tokens.size() ? _tokens.back() : _tokens.at(_pos);
+	return Peek(0);
 }
 
 Token Parser::Consume()

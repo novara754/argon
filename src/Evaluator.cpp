@@ -2,13 +2,12 @@
 #include "Evaluator.h"
 #include "Facts.h"
 
-Evaluator::Evaluator(std::unique_ptr<Node> &root)
-	: _root(root)
+Evaluator::Evaluator()
 {}
 
-Value Evaluator::Evaluate()
+Value Evaluator::Evaluate(std::unique_ptr<Node> &root)
 {
-	return Evaluate(_root.get());
+	return Evaluate(root.get());
 }
 
 Value Evaluator::Evaluate(Node *node)
@@ -18,6 +17,8 @@ Value Evaluator::Evaluate(Node *node)
 		case NodeKind::Literal: return Evaluate(static_cast<LiteralNode *>(node));
 		case NodeKind::BinaryOperation: return Evaluate(static_cast<BinaryNode *>(node));
 		case NodeKind::Sequence: return Evaluate(static_cast<SequenceNode *>(node));
+		case NodeKind::Binding: return Evaluate(static_cast<BindingNode *>(node));
+		case NodeKind::VariableAccess: return Evaluate(static_cast<VariableAccessNode *>(node));
 	}
 }
 
@@ -50,4 +51,32 @@ Value Evaluator::Evaluate(SequenceNode *node)
 	for (const auto &e : node->GetExpressions())
 		val = Evaluate(e.get());
 	return val;
+}
+
+Value Evaluator::Evaluate(BindingNode *node)
+{
+	auto itr = _bindings.find(node->GetIdentifier().GetRaw());
+	if (itr != _bindings.end())
+	{
+		std::stringstream out;
+		out << "ReferenceError: Variable '" << node->GetIdentifier().GetRaw() << "' has already been bound.";
+		throw std::exception{ out.str().c_str() };
+	}
+
+	auto val = Evaluate(node->GetValue().get());
+	_bindings.insert({ node->GetIdentifier().GetRaw(), val });
+
+	return val;
+}
+
+Value Evaluator::Evaluate(VariableAccessNode *node)
+{
+	auto itr = _bindings.find(node->GetIdentifier().GetRaw());
+	if (itr == _bindings.end())
+	{
+		std::stringstream out;
+		out << "ReferenceError: Variable '" << node->GetIdentifier().GetRaw() << "' is unbound.";
+		throw std::exception{ out.str().c_str() };
+	}
+	return itr->second;
 }

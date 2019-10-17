@@ -95,3 +95,51 @@ const std::vector<std::unique_ptr<Node>> &SequenceNode::GetExpressions() const
 {
 	return _expressions;
 }
+
+BindingNode::BindingNode(Token identifier, std::unique_ptr<Node> value)
+	: _identifier(identifier),
+	_value(std::move(value))
+{}
+
+NodeKind BindingNode::GetKind() const
+{
+	return NodeKind::Binding;
+}
+
+std::string BindingNode::AsStr() const
+{
+	std::stringstream ss;
+	ss << "(Binding '" << _identifier.GetRaw() << "' " << _value->AsStr() << ")";
+	return ss.str();
+}
+
+const Token &BindingNode::GetIdentifier() const
+{
+	return _identifier;
+}
+
+const std::unique_ptr<Node> &BindingNode::GetValue() const
+{
+	return _value;
+}
+
+VariableAccessNode::VariableAccessNode(Token identifier)
+	: _identifier(identifier)
+{}
+
+NodeKind VariableAccessNode::GetKind() const
+{
+	return NodeKind::VariableAccess;
+}
+
+std::string VariableAccessNode::AsStr() const
+{
+	std::stringstream ss;
+	ss << "(VariableAccess '" << _identifier.GetRaw() << "')";
+	return ss.str();
+}
+
+const Token &VariableAccessNode::GetIdentifier() const
+{
+	return _identifier;
+}

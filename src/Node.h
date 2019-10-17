@@ -11,6 +11,8 @@ enum class NodeKind
 	Literal,
 	BinaryOperation,
 	Sequence,
+	Binding,
+	VariableAccess,
 };
 
 class Node
@@ -53,4 +55,26 @@ public:
 	NodeKind GetKind() const;
 	std::string AsStr() const;
 	const std::vector<std::unique_ptr<Node>> &GetExpressions() const;
+};
+
+class BindingNode : public Node
+{
+	Token _identifier;
+	std::unique_ptr<Node> _value;
+public:
+	explicit BindingNode(Token identifier, std::unique_ptr<Node> value);
+	NodeKind GetKind() const;
+	std::string AsStr() const;
+	const Token &GetIdentifier() const;
+	const std::unique_ptr<Node> &GetValue() const;
+};
+
+class VariableAccessNode : public Node
+{
+	Token _identifier;
+public:
+	explicit VariableAccessNode(Token identifier);
+	NodeKind GetKind() const;
+	std::string AsStr() const;
+	const Token &GetIdentifier() const;
 };

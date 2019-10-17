@@ -8,7 +8,7 @@ void help();
 int main()
 {
 	std::cout << "Argon REPL. Enter `.help` for a list of meta commands." << std::endl << std::endl;
-
+	Evaluator evaluator;
 	while (true)
 	{
 		std::cout << "> " << std::flush;
@@ -33,10 +33,9 @@ int main()
 		}
 		else
 		{
-			Evaluator evaluator(tree);
 			try
 			{
-				std::cout << evaluator.Evaluate() << std::endl;
+				std::cout << evaluator.Evaluate(tree) << std::endl;
 			}
 			catch (const std::exception &e)
 			{

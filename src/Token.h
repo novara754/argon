@@ -13,6 +13,7 @@ enum class TokenKind
 	CParen,
 	Period,
 	Comma,
+	LeftArrow,
 	Number,
 	Identifier,
 	True,

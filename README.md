@@ -19,6 +19,12 @@ TypeError: Unknown operator 'or' for operands Boolean and Integer.
 true
 > 1 > 0 or 2 > 3.
 true
+> x <- 123, y <- 2.
+2
+> x * y.
+246
+> x > 300.
+false
 ```
 
 ## License
