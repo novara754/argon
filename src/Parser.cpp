@@ -34,9 +34,17 @@ const std::vector<std::string> &Parser::GetDiagnostics() const
 
 std::unique_ptr<Node> Parser::ParseExpression()
 {
-	auto term = ParseTerm();
+	std::vector<std::unique_ptr<Node>> expressions;
+	expressions.push_back(std::move(ParseTerm()));
+
+	while (Current().GetKind() == TokenKind::Comma)
+	{
+		auto comma = Consume();
+		expressions.push_back(std::move(ParseTerm()));
+	}
+
 	auto period = Expect(TokenKind::Period);
-	return term;
+	return std::make_unique<SequenceNode>(std::move(expressions));
 }
 
 std::unique_ptr<Node> Parser::ParseTerm(int parent_prec)

@@ -12,6 +12,7 @@ enum class TokenKind
 	OParen,
 	CParen,
 	Period,
+	Comma,
 	Number,
 	Identifier,
 	True,

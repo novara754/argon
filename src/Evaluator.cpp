@@ -17,6 +17,7 @@ Value Evaluator::Evaluate(Node *node)
 	{
 		case NodeKind::Literal: return Evaluate(static_cast<LiteralNode *>(node));
 		case NodeKind::BinaryOperation: return Evaluate(static_cast<BinaryNode *>(node));
+		case NodeKind::Sequence: return Evaluate(static_cast<SequenceNode *>(node));
 	}
 }
 
@@ -41,4 +42,12 @@ Value Evaluator::Evaluate(BinaryNode *node)
 		out << "TypeError: Unknown operator '" << node->GetOperator().GetRaw() << "' for operands " << left.kind << " and " << right.kind << ".";
 		throw std::exception{ out.str().c_str() };
 	}
+}
+
+Value Evaluator::Evaluate(SequenceNode *node)
+{
+	Value val;
+	for (const auto &e : node->GetExpressions())
+		val = Evaluate(e.get());
+	return val;
 }

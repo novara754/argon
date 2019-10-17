@@ -37,6 +37,7 @@ Token Lexer::NextToken()
 		case '(': return Token(TokenKind::OParen, _pos++, "(");
 		case ')': return Token(TokenKind::CParen, _pos++, ")");
 		case '.': return Token(TokenKind::Period, _pos++, ".");
+		case ',': return Token(TokenKind::Comma, _pos++, ",");
 		case '<':
 		{
 			if (Peek() == '=')

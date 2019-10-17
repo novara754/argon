@@ -71,3 +71,27 @@ const Token &BinaryNode::GetOperator() const
 {
 	return _op;
 }
+
+SequenceNode::SequenceNode(std::vector<std::unique_ptr<Node>> expressions)
+	: _expressions(std::move(expressions))
+{}
+
+NodeKind SequenceNode::GetKind() const
+{
+	return NodeKind::Sequence;
+}
+
+std::string SequenceNode::AsStr() const
+{
+	std::stringstream ss;
+	ss << "(Sequence";
+	for (const auto &e : _expressions)
+		ss << " " << e->AsStr();
+	ss << ")";
+	return ss.str();
+}
+
+const std::vector<std::unique_ptr<Node>> &SequenceNode::GetExpressions() const
+{
+	return _expressions;
+}

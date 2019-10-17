@@ -41,6 +41,7 @@ std::ostream &operator<<(std::ostream &out, const TokenKind &kind)
 		KIND_TO_STR(OParen);
 		KIND_TO_STR(CParen);
 		KIND_TO_STR(Period);
+		KIND_TO_STR(Comma);
 		KIND_TO_STR(Number);
 		KIND_TO_STR(Identifier);
 		KIND_TO_STR(True);

@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <ostream>
+#include <vector>
 #include "Token.h"
 #include "Value.h"
 
@@ -9,6 +10,7 @@ enum class NodeKind
 {
 	Literal,
 	BinaryOperation,
+	Sequence,
 };
 
 class Node
@@ -41,4 +43,14 @@ public:
 	const std::unique_ptr<Node> &GetLeft() const;
 	const std::unique_ptr<Node> &GetRight() const;
 	const Token &GetOperator() const;
+};
+
+class SequenceNode : public Node
+{
+	std::vector<std::unique_ptr<Node>> _expressions;
+public:
+	explicit SequenceNode(std::vector<std::unique_ptr<Node>> expressions);
+	NodeKind GetKind() const;
+	std::string AsStr() const;
+	const std::vector<std::unique_ptr<Node>> &GetExpressions() const;
 };

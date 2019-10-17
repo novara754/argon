@@ -14,4 +14,5 @@ private:
 	Value Evaluate(Node *node);
 	Value Evaluate(LiteralNode *node);
 	Value Evaluate(BinaryNode *node);
+	Value Evaluate(SequenceNode *node);
 };

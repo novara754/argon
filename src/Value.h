@@ -16,6 +16,7 @@ struct Value
 		int int_value;
 		bool bool_value;
 	};
+	Value() = default;
 	Value(int value);
 	Value(bool value);
 };
