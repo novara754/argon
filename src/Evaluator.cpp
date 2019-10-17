@@ -41,7 +41,7 @@ Value Evaluator::Evaluate(BinaryNode *node)
 	{
 		std::stringstream out;
 		out << "TypeError: Unknown operator '" << node->GetOperator().GetRaw() << "' for operands " << left.kind << " and " << right.kind << ".";
-		throw std::exception{ out.str().c_str() };
+		throw std::runtime_error{ out.str() };
 	}
 }
 
@@ -60,7 +60,7 @@ Value Evaluator::Evaluate(BindingNode *node)
 	{
 		std::stringstream out;
 		out << "ReferenceError: Variable '" << node->GetIdentifier().GetRaw() << "' has already been bound.";
-		throw std::exception{ out.str().c_str() };
+		throw std::runtime_error{ out.str() };
 	}
 
 	auto val = Evaluate(node->GetValue().get());
@@ -76,7 +76,7 @@ Value Evaluator::Evaluate(VariableAccessNode *node)
 	{
 		std::stringstream out;
 		out << "ReferenceError: Variable '" << node->GetIdentifier().GetRaw() << "' is unbound.";
-		throw std::exception{ out.str().c_str() };
+		throw std::runtime_error{ out.str() };
 	}
 	return itr->second;
 }
