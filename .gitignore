@@ -1,5 +1,6 @@
 # Editor settings
 .vs/
+.vscode/
 
 # Build artifacts
 out/
