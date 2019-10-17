@@ -28,6 +28,7 @@ enum class TokenKind
 	BangEqual,
 	EndOfFile,
 	Error,
+	Size,
 };
 
 class Token

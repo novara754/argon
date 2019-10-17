@@ -30,27 +30,27 @@ std::string Token::GetRaw() const
 
 std::ostream &operator<<(std::ostream &out, const TokenKind &kind)
 {
-#define KIND_TO_STR(kind) case TokenKind::##kind: kind_str = #kind; break
+#define KIND_TO_STR(kind, name) case kind: kind_str = #name; break
 	std::string kind_str;
 	switch (kind)
 	{
-		KIND_TO_STR(Plus);
-		KIND_TO_STR(Minus);
-		KIND_TO_STR(Star);
-		KIND_TO_STR(Slash);
-		KIND_TO_STR(OParen);
-		KIND_TO_STR(CParen);
-		KIND_TO_STR(Period);
-		KIND_TO_STR(Comma);
-		KIND_TO_STR(LeftArrow);
-		KIND_TO_STR(Number);
-		KIND_TO_STR(Identifier);
-		KIND_TO_STR(True);
-		KIND_TO_STR(False);
-		KIND_TO_STR(And);
-		KIND_TO_STR(Or);
-		KIND_TO_STR(EndOfFile);
-		KIND_TO_STR(Error);
+		KIND_TO_STR(TokenKind::Plus, Plus);
+		KIND_TO_STR(TokenKind::Minus, Minus);
+		KIND_TO_STR(TokenKind::Star, Star);
+		KIND_TO_STR(TokenKind::Slash, Slash);
+		KIND_TO_STR(TokenKind::OParen, OParen);
+		KIND_TO_STR(TokenKind::CParen, CParen);
+		KIND_TO_STR(TokenKind::Period, Period);
+		KIND_TO_STR(TokenKind::Comma, Comma);
+		KIND_TO_STR(TokenKind::LeftArrow, LeftArrow);
+		KIND_TO_STR(TokenKind::Number, Number);
+		KIND_TO_STR(TokenKind::Identifier, Identifier);
+		KIND_TO_STR(TokenKind::True, True);
+		KIND_TO_STR(TokenKind::False, False);
+		KIND_TO_STR(TokenKind::And, And);
+		KIND_TO_STR(TokenKind::Or, Or);
+		KIND_TO_STR(TokenKind::EndOfFile, EndOfFile);
+		KIND_TO_STR(TokenKind::Error, Error);
 	}
 	return out << kind_str;
 #undef KIND_TO_STR

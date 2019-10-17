@@ -12,12 +12,12 @@ Value::Value(bool value)
 
 std::ostream &operator<<(std::ostream &out, const ValueKind &kind)
 {
-#define KIND_TO_STR(kind) case ValueKind::##kind: kind_str = #kind; break
+#define KIND_TO_STR(kind, name) case kind: kind_str = #name; break
 	std::string kind_str;
 	switch (kind)
 	{
-		KIND_TO_STR(Integer);
-		KIND_TO_STR(Boolean);
+		KIND_TO_STR(ValueKind::Integer, Integer);
+		KIND_TO_STR(ValueKind::Boolean, Boolean);
 	}
 	return out << kind_str;
 #undef KIND_TO_STR
