@@ -48,3 +48,6 @@ const BinaryOperator BinaryOperators[] = {
 
 int GetBinaryOperatorPrecedence(TokenKind kind);
 std::optional<BinaryOperator> GetBinaryOperator(TokenKind op, ValueKind left, ValueKind right);
+
+bool CharacterIsNumber(char c);
+bool CharacterIsIdentifier(char c);

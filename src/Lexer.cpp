@@ -1,6 +1,7 @@
 #include <cctype>
 #include <map>
 #include "Lexer.h"
+#include "Facts.h"
 
 const std::map<std::string, TokenKind> ReservedKeywords = {
 	{ "true", TokenKind::True },
@@ -116,22 +117,33 @@ void Lexer::SkipWhitespace()
 Token Lexer::Number()
 {
 	auto start = _pos;
-	while (std::isdigit(CurrentChar()))
+	while (CharacterIsNumber(CurrentChar()))
 		_pos++;
 	auto end = _pos;
 
 	auto raw = _source.substr(start, end - start);
-	return Token(TokenKind::Number, start, raw);
+	int value = 0;
+	try {
+		value = std::stoi(raw);
+	} catch (const std::out_of_range &e) {
+		_diagnostics.push_back("ValueError: " + raw + " is not a valid integer.");
+	}
+	return Token(TokenKind::Number, start, raw, Value(value));
 }
 
 Token Lexer::Identifier()
 {
 	auto start = _pos;
-	while (std::isalpha(CurrentChar()) || CurrentChar() == '_' || CurrentChar() == '-')
+	while (CharacterIsIdentifier(CurrentChar()))
 		_pos++;
 	auto end = _pos;
 
 	auto raw = _source.substr(start, end - start);
 	auto itr = ReservedKeywords.find(raw);
-	return Token(itr != ReservedKeywords.end() ? itr->second : TokenKind::Identifier, _pos, raw);
+	auto kind = itr != ReservedKeywords.end() ? itr->second : TokenKind::Identifier;
+
+	if (kind == TokenKind::True || kind == TokenKind::False)
+		return Token(kind, _pos, raw, Value(kind == TokenKind::True));
+
+	return Token(kind, _pos, raw);
 }

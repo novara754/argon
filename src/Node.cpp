@@ -1,5 +1,6 @@
 #include <sstream>
 #include "Node.h"
+#include "Util.h"
 
 LiteralNode::LiteralNode(Token literal)
 	: _literal(literal)
@@ -24,19 +25,7 @@ const Token &LiteralNode::GetToken() const
 
 Value LiteralNode::GetValue() const
 {
-	switch (_literal.GetKind())
-	{
-		case TokenKind::Number:
-		{
-			int value = std::stoi(_literal.GetRaw());
-			return { value };
-		}
-		case TokenKind::True:
-		case TokenKind::False:
-		{
-			return { _literal.GetKind() == TokenKind::True };
-		}
-	}
+	return _literal.GetValue();
 }
 
 BinaryNode::BinaryNode(std::unique_ptr<Node> left, std::unique_ptr<Node> right, const Token op)

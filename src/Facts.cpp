@@ -18,3 +18,13 @@ std::optional<BinaryOperator> GetBinaryOperator(TokenKind op, ValueKind left, Va
 
 	return itr != std::end(BinaryOperators) ? *itr : std::optional<BinaryOperator>();
 }
+
+bool CharacterIsNumber(char c) {
+	return std::isdigit(c)
+		|| c == '_';
+}
+
+bool CharacterIsIdentifier(char c) {
+	return std::isalpha(c)
+		|| c == '_';
+}

@@ -13,6 +13,10 @@ A small compiler (interpreter at the moment) written in C++.
 false.
 > false or true.
 true
+> big_num <- 1_234_567.
+1234567
+> bigger_num <- 2352569206923602.
+ValueError: 2352569206923602 is not a valid integer.
 > true or 2.
 TypeError: Unknown operator 'or' for operands Boolean and Integer.
 > 1 <= 2.

@@ -4,13 +4,22 @@
 Token::Token(TokenKind kind, std::size_t pos, std::string raw)
 	: _kind(kind),
 	_pos(pos),
-	_raw(raw)
+	_raw(raw),
+	_value(0)
+{}
+
+Token::Token(TokenKind kind, std::size_t pos, std::string raw, Value value)
+	: _kind(kind),
+	_pos(pos),
+	_raw(raw),
+	_value(value)
 {}
 
 Token::Token(const Token &token)
 	: _kind(token._kind),
 	_pos(token._pos),
-	_raw(token._raw)
+	_raw(token._raw),
+	_value(token._value)
 {}
 
 TokenKind Token::GetKind() const
@@ -23,9 +32,16 @@ std::size_t Token::GetPos() const
 	return _pos;
 }
 
-std::string Token::GetRaw() const
+const std::string &Token::GetRaw() const
 {
 	return _raw;
+}
+
+
+
+Value Token::GetValue() const
+{
+	return _value;
 }
 
 std::ostream &operator<<(std::ostream &out, const TokenKind &kind)
