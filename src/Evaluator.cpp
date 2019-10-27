@@ -19,6 +19,8 @@ Value Evaluator::Evaluate(Node *node)
 		case NodeKind::Sequence: return Evaluate(static_cast<SequenceNode *>(node));
 		case NodeKind::Binding: return Evaluate(static_cast<BindingNode *>(node));
 		case NodeKind::VariableAccess: return Evaluate(static_cast<VariableAccessNode *>(node));
+		case NodeKind::UnnamedFunction: return Evaluate(static_cast<UnnamedFunctionNode *>(node));
+		case NodeKind::FunctionCall: return Evaluate(static_cast<FunctionCallNode *>(node));
 	}
 }
 
@@ -79,4 +81,24 @@ Value Evaluator::Evaluate(VariableAccessNode *node)
 		throw std::runtime_error{ out.str() };
 	}
 	return itr->second;
+}
+
+Value Evaluator::Evaluate(UnnamedFunctionNode *node)
+{
+	return node->GetValue();
+}
+
+Value Evaluator::Evaluate(FunctionCallNode *node)
+{
+	auto fun = Evaluate(node->GetFun().get());
+	if (fun.kind == ValueKind::Function)
+	{
+		return Evaluate(fun.function_body);
+	}
+	else
+	{
+		std::stringstream out;
+		out << "ValueError: Not a function.";
+		throw std::runtime_error{ out.str() };
+	}
 }

@@ -29,6 +29,12 @@ true
 246
 > x > 300.
 false
+> f <- \\() -> 123 end.
+\#fun
+> x().
+123
+> g <- true, g().
+ValueError: Not a function.
 ```
 
 ## License

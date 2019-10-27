@@ -13,6 +13,8 @@ enum class NodeKind
 	Sequence,
 	Binding,
 	VariableAccess,
+	UnnamedFunction,
+	FunctionCall,
 };
 
 class Node
@@ -77,4 +79,25 @@ public:
 	NodeKind GetKind() const;
 	std::string AsStr() const;
 	const Token &GetIdentifier() const;
+};
+
+class UnnamedFunctionNode : public Node
+{
+	std::unique_ptr<Node> _body;
+public:
+	explicit UnnamedFunctionNode(std::unique_ptr<Node> body);
+	NodeKind GetKind() const;
+	std::string AsStr() const;
+	const std::unique_ptr<Node> &GetBody() const;
+	Value GetValue() const;
+};
+
+class FunctionCallNode : public Node
+{
+	std::unique_ptr<Node> _fun;
+public:
+	explicit FunctionCallNode(std::unique_ptr<Node> fun);
+	NodeKind GetKind() const;
+	std::string AsStr() const;
+	const std::unique_ptr<Node> &GetFun() const;
 };

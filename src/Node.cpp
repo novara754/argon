@@ -132,3 +132,50 @@ const Token &VariableAccessNode::GetIdentifier() const
 {
 	return _identifier;
 }
+
+UnnamedFunctionNode::UnnamedFunctionNode(std::unique_ptr<Node> body)
+	: _body(std::move(body))
+{}
+
+NodeKind UnnamedFunctionNode::GetKind() const
+{
+	return NodeKind::UnnamedFunction;
+}
+
+std::string UnnamedFunctionNode::AsStr() const
+{
+	std::stringstream ss;
+	ss << "(UnnamedFunctionNode " << _body->AsStr() << ")";
+	return ss.str();
+}
+
+const std::unique_ptr<Node> &UnnamedFunctionNode::GetBody() const
+{
+	return _body;
+}
+
+Value UnnamedFunctionNode::GetValue() const
+{
+	return Value(_body.get());
+}
+
+FunctionCallNode::FunctionCallNode(std::unique_ptr<Node> fun)
+	: _fun(std::move(fun))
+{}
+
+NodeKind FunctionCallNode::GetKind() const
+{
+	return NodeKind::FunctionCall;
+}
+
+std::string FunctionCallNode::AsStr() const
+{
+	std::stringstream ss;
+	ss << "(FunctionCallNode " << _fun->AsStr() << ")";
+	return ss.str();
+}
+
+const std::unique_ptr<Node> &FunctionCallNode::GetFun() const
+{
+	return _fun;
+}

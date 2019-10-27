@@ -59,12 +59,15 @@ std::ostream &operator<<(std::ostream &out, const TokenKind &kind)
 		KIND_TO_STR(TokenKind::Period, Period);
 		KIND_TO_STR(TokenKind::Comma, Comma);
 		KIND_TO_STR(TokenKind::LeftArrow, LeftArrow);
+		KIND_TO_STR(TokenKind::RightArrow, RightArrow);
 		KIND_TO_STR(TokenKind::Number, Number);
 		KIND_TO_STR(TokenKind::Identifier, Identifier);
 		KIND_TO_STR(TokenKind::True, True);
 		KIND_TO_STR(TokenKind::False, False);
 		KIND_TO_STR(TokenKind::And, And);
 		KIND_TO_STR(TokenKind::Or, Or);
+		KIND_TO_STR(TokenKind::Lambda, Lambda);
+		KIND_TO_STR(TokenKind::End, End);
 		KIND_TO_STR(TokenKind::EndOfFile, EndOfFile);
 		KIND_TO_STR(TokenKind::Error, Error);
 	}

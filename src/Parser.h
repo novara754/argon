@@ -16,10 +16,12 @@ public:
 	std::unique_ptr<Node> Parse();
 	const std::vector<std::string> &GetDiagnostics() const;
 private:
+	std::unique_ptr<Node> ParseSentence();
 	std::unique_ptr<Node> ParseSequence();
 	std::unique_ptr<Node> ParseExpression();
 	std::unique_ptr<Node> ParseTerm(int parent_prec = -1);
 	std::unique_ptr<Node> ParsePrimary();
+	std::unique_ptr<Node> ParseLambdaBody();
 	Token Peek(int offset) const;
 	Token Current() const;
 	Token Consume();

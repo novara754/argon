@@ -8,6 +8,7 @@ const std::map<std::string, TokenKind> ReservedKeywords = {
 	{ "false", TokenKind::False },
 	{ "and", TokenKind::And },
 	{ "or", TokenKind::Or },
+	{ "end", TokenKind::End },
 };
 
 Lexer::Lexer(std::string &source)
@@ -32,13 +33,25 @@ Token Lexer::NextToken()
 	switch (CurrentChar())
 	{
 		case '+': return Token(TokenKind::Plus, _pos++, "+");
-		case '-': return Token(TokenKind::Minus, _pos++, "-");
+		case '-': 
+		{
+			if (Peek() == '>')
+			{
+				_pos += 2;
+				return Token(TokenKind::RightArrow, _pos - 2, "->");
+			}
+			else
+			{
+				return Token(TokenKind::Minus, _pos++, "-");
+			}
+		}
 		case '*': return Token(TokenKind::Star, _pos++, "*");
 		case '/': return Token(TokenKind::Slash, _pos++, "/");
 		case '(': return Token(TokenKind::OParen, _pos++, "(");
 		case ')': return Token(TokenKind::CParen, _pos++, ")");
 		case '.': return Token(TokenKind::Period, _pos++, ".");
 		case ',': return Token(TokenKind::Comma, _pos++, ",");
+		case '\\': return Token(TokenKind::Lambda, _pos++, "\\");
 		case '<':
 		{
 			if (Peek() == '=')

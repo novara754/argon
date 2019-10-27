@@ -22,7 +22,7 @@ Parser::Parser(std::string &source)
 
 std::unique_ptr<Node> Parser::Parse()
 {
-	auto expr = ParseSequence();
+	auto expr = ParseSentence();
 	auto eof = Expect(TokenKind::EndOfFile);
 	return expr;
 }
@@ -30,6 +30,13 @@ std::unique_ptr<Node> Parser::Parse()
 const std::vector<std::string> &Parser::GetDiagnostics() const
 {
 	return _diagnostics;
+}
+
+std::unique_ptr<Node> Parser::ParseSentence()
+{
+	auto sequence = ParseSequence();
+	auto period = Expect(TokenKind::Period);
+	return sequence;
 }
 
 std::unique_ptr<Node> Parser::ParseSequence()
@@ -43,7 +50,6 @@ std::unique_ptr<Node> Parser::ParseSequence()
 		expressions.push_back(std::move(ParseExpression()));
 	}
 
-	auto period = Expect(TokenKind::Period);
 	return std::make_unique<SequenceNode>(std::move(expressions));
 }
 
@@ -80,26 +86,60 @@ std::unique_ptr<Node> Parser::ParseTerm(int parent_prec)
 
 std::unique_ptr<Node> Parser::ParsePrimary()
 {
+	std::unique_ptr<Node> node;
+
 	switch (Current().GetKind())
 	{
 		case TokenKind::OParen:
 		{
 			auto oparen = Consume();
-			auto expr = ParseTerm();
+			node = ParseTerm();
 			auto cparen = Expect(TokenKind::CParen);
-			return expr;
+			break;
 		}
 		case TokenKind::Identifier:
 		{
 			auto identifier = Consume();
-			return std::make_unique<VariableAccessNode>(identifier);
+			node = std::make_unique<VariableAccessNode>(identifier);
+			break;
+		}
+		case TokenKind::Lambda:
+		{
+			auto lambda = Consume();
+			auto oparen = Expect(TokenKind::OParen);
+			// TODO: Parse parameters here.
+			auto cparen = Expect(TokenKind::CParen);
+			auto arrow = Expect(TokenKind::RightArrow);
+			auto body = ParseLambdaBody();
+			node = std::make_unique<UnnamedFunctionNode>(std::move(body));
+			break;
 		}
 		default:
 		{
 			auto literal = Expect({ TokenKind::Number, TokenKind::True, TokenKind::False });
-			return std::make_unique<LiteralNode>(literal);
+			node = std::make_unique<LiteralNode>(literal);
+			break;
 		}
 	}
+
+	if (Current().GetKind() == TokenKind::OParen)
+	{
+		auto oparen = Consume();
+		// TODO: Parse arguments here.
+		auto cparen = Expect(TokenKind::CParen);
+		return std::make_unique<FunctionCallNode>(std::move(node));
+	}
+	else
+	{
+		return node;
+	}
+}
+
+std::unique_ptr<Node> Parser::ParseLambdaBody()
+{
+	auto sequence = ParseSequence();
+	auto period = Expect(TokenKind::End);
+	return sequence;
 }
 
 Token Parser::Peek(int offset) const

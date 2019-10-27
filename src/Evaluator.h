@@ -18,4 +18,6 @@ private:
 	Value Evaluate(SequenceNode *node);
 	Value Evaluate(BindingNode *node);
 	Value Evaluate(VariableAccessNode *node);
+	Value Evaluate(UnnamedFunctionNode *node);
+	Value Evaluate(FunctionCallNode *node);
 };
